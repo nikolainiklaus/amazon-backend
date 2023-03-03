@@ -1,4 +1,6 @@
 import Express from "express";
+import multer from "multer";
+import { extname } from "path";
 import createHttpError from "http-errors";
 import {
   getProducts,
@@ -145,5 +147,35 @@ productsRouter.post("/:id/reviews/upload", async (req, res, next) => {
     next(error);
   }
 });
+
+productsRouter.post(
+  "/:id/upload",
+  multer().single("imageUrl"),
+  async (req, res, next) => {
+    try {
+      const allProducts = await getProducts();
+      const index = allProducts.findIndex(
+        (product) => req.params.id == product._id
+      );
+      if (index !== -1) {
+        const product = allProducts[index];
+        const fileExtension = extname(req.file.originalname);
+        const fileName = req.params.id + fileExtension;
+        const productWithImg = {
+          ...product,
+          ...req.body,
+          updatedAt: new Date(),
+        };
+        allProducts[index] = productWithImg;
+        writeProducts(allProducts);
+        res.status(202).send(productWithImg);
+      } else {
+        next(createHttpError(404, "Product with this ID not found"));
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default productsRouter;
