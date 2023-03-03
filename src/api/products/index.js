@@ -2,6 +2,7 @@ import Express from "express";
 import createHttpError from "http-errors";
 import { getProducts, writeProducts } from "../../lib/fs-tools.js";
 import uniqid from "uniqid";
+import { checkProductSchema, triggerBadRequest } from "./validation.js";
 
 const productsRouter = Express.Router();
 
@@ -18,23 +19,28 @@ productsRouter.get("/", async (req, res, next) => {
   }
 });
 
-productsRouter.post("/", async (req, res, next) => {
-  console.log("post triggered");
-  try {
-    const allProducts = await getProducts();
-    const newProduct = {
-      ...req.body,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      _id: uniqid(),
-    };
-    allProducts.push(newProduct);
-    writeProducts(allProducts);
-    res.status(201).send(newProduct);
-  } catch (error) {
-    next(error);
+productsRouter.post(
+  "/",
+  checkProductSchema,
+  triggerBadRequest,
+  async (req, res, next) => {
+    console.log("post triggered");
+    try {
+      const allProducts = await getProducts();
+      const newProduct = {
+        ...req.body,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        _id: uniqid(),
+      };
+      allProducts.push(newProduct);
+      writeProducts(allProducts);
+      res.status(201).send(newProduct);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 productsRouter.put("/:id", async (req, res, next) => {
   try {
