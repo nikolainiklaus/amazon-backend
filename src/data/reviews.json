@@ -1,6 +1,1 @@
-{
-  "_id": "123455",
-  "comment": "A good book but definitely I don't like many parts of the plot",
-  "rate": 3,
-  "productId": "5d318e1a8541744830bef139"
-}
+[{"_id":"123455","comment":"A good book but definitely I don't like many parts of the plot","rate":3,"productId":"5d318e1a8541744830bef139"},{"comment":"this is my second comment","_id":"1c8f1nzklesldga7","productId":"1c8f1khelesishvl","createdAt":"2023-03-03T13:49:11.214Z"},{"comment":"this is my third comment","_id":"1c8f1o76lesli8le","productId":"1c8f1khelesishvl","createdAt":"2023-03-03T13:52:54.529Z"}]

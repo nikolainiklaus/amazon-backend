@@ -16,3 +16,7 @@ export const getProducts = () => {
 
 export const writeProducts = (allProducts) =>
   writeJSON(productsJSON, allProducts);
+
+export const getReviews = () => readJSON(reviewsJSON);
+
+export const writeReviews = (allReviews) => writeJSON(reviewsJSON, allReviews);

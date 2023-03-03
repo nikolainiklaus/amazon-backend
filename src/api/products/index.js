@@ -1,6 +1,11 @@
 import Express from "express";
 import createHttpError from "http-errors";
-import { getProducts, writeProducts } from "../../lib/fs-tools.js";
+import {
+  getProducts,
+  getReviews,
+  writeProducts,
+  writeReviews,
+} from "../../lib/fs-tools.js";
 import uniqid from "uniqid";
 import { checkProductSchema, triggerBadRequest } from "./validation.js";
 
@@ -13,6 +18,20 @@ productsRouter.get("/", async (req, res, next) => {
       res.send(allProducts);
     } else {
       next(createHttpError(404, "No products found"));
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+productsRouter.get("/:id", async (req, res, next) => {
+  try {
+    const allProducts = await getProducts();
+    const product = allProducts.find((product) => product._id == req.params.id);
+    if (product) {
+      res.status(201).send(product);
+    } else {
+      next(createHttpError(404, "product not found"));
     }
   } catch (error) {
     next(error);
@@ -45,10 +64,11 @@ productsRouter.post(
 productsRouter.put("/:id", async (req, res, next) => {
   try {
     const allProducts = await getProducts();
-    const productToChange = allProducts.find(
+    const index = allProducts.findIndex(
       (product) => req.params.id == product._id
     );
-    if (productToChange) {
+    if (index !== -1) {
+      const productToChange = allProducts[index];
       console.log("ptc", productToChange);
       const productAfterChange = {
         ...productToChange,
@@ -56,7 +76,7 @@ productsRouter.put("/:id", async (req, res, next) => {
         updatedAt: new Date(),
       };
 
-      allProducts.push(productAfterChange);
+      allProducts[index] = productAfterChange;
       writeProducts(allProducts);
       res.status(201).send(productAfterChange);
     } else {
@@ -79,6 +99,48 @@ productsRouter.delete("/:id", async (req, res, next) => {
     } else {
       next(createHttpError(404, `Book with this ${req.params.id} not found`));
     }
+  } catch (error) {
+    next(error);
+  }
+});
+
+productsRouter.get("/:id/reviews", async (req, res, next) => {
+  try {
+    const allReviews = await getReviews();
+    const filteredReviews = allReviews.filter(
+      (r) => r.productId == req.params.id
+    );
+    if (filteredReviews.length < 0 || !filteredReviews) {
+      next(createHttpError(404, `no reviews found for this product`));
+    } else {
+      res.status(201).send(filteredReviews);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+productsRouter.post("/:id/reviews/upload", async (req, res, next) => {
+  try {
+    const productId = req.params.id;
+    const product = await getProducts().then((products) =>
+      products.find((p) => p._id == productId)
+    );
+    if (!product) {
+      throw new BadRequestError(`Product with ID ${productId} not found`);
+    }
+    const review = {
+      ...req.body,
+      _id: uniqid(),
+      productId: productId,
+      createdAt: new Date(),
+    };
+    const reviews = await getReviews();
+    console.log("reviews hree:", reviews);
+    reviews.push(review);
+    await writeReviews(reviews);
+
+    res.status(201).send(review);
   } catch (error) {
     next(error);
   }

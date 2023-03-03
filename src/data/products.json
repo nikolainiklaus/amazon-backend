@@ -1,1 +1,33 @@
-[{"name":"3310","description":"somthing longer","brand":"nokia","imageUrl":"https://drop.ndtv.com/TECH/product_database/images/2152017124957PM_635_nokia_3310.jpeg?downsize=*:420&output-quality=80","price":100,"category":"smartphones","createdAt":"2023-03-03T11:50:15.185Z","updatedAt":"2023-03-03T11:50:15.185Z","_id":"1c8f1i1clesh4i36"},{"name":"completely new!!!!","description":"somthing longe!!!!!!","brand":"Samsung","price":2134,"category":"UHA","createdAt":"2023-03-03T12:36:54.272Z","updatedAt":"2023-03-03T12:36:54.272Z","_id":"1c8f1khelesishvl"}]
+[
+  {
+    "name": "3310",
+    "description": "somthing longer",
+    "brand": "nokia",
+    "imageUrl": "https://drop.ndtv.com/TECH/product_database/images/2152017124957PM_635_nokia_3310.jpeg?downsize=*:420&output-quality=80",
+    "price": 100,
+    "category": "smartphones",
+    "createdAt": "2023-03-03T11:50:15.185Z",
+    "updatedAt": "2023-03-03T11:50:15.185Z",
+    "_id": "1c8f1i1clesh4i36"
+  },
+  {
+    "name": "completely new!!!!",
+    "description": "somthing longe!!!!!!",
+    "brand": "Samsung",
+    "price": 2134,
+    "category": "UHA",
+    "createdAt": "2023-03-03T12:36:54.272Z",
+    "updatedAt": "2023-03-03T12:36:54.272Z",
+    "_id": "1c8f1khelesishvl"
+  },
+  {
+    "name": "completely new!!!!",
+    "description": "somthing longe!!!!!!",
+    "brand": "Samsung",
+    "price": 2134,
+    "category": "2134 21321",
+    "createdAt": "2023-03-03T12:53:04.864Z",
+    "updatedAt": "2023-03-03T13:28:42.063Z",
+    "_id": "1c8f1l9ulesjdash"
+  }
+]
